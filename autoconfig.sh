@@ -9,6 +9,7 @@ start_config(){
     clear
     echo "phase 1"
     sleep 1
+    echo "setprop service.adb.tcp.port=5555" >> /system/
     
 }
 
