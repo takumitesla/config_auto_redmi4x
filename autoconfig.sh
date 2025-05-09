@@ -5,8 +5,19 @@ pkg install figlet -y
 figlet AUTO_CONFIG
 echo "by takumi tesla"
 
+start_config(){
+    clear
+    echo "phase 1"
+    sleep 1
+    
+}
+
 if [ -x /system/xbin/su ] || [ -x /system/bin/su ] || [ -x /sbin/su ] || [ -x /system/su ]; then
-    echo "Perangkat sudah di-root!"
+    echo "The device is rooted."
+    sleep 1
+    echo "start program.."
+    sleep 1
+    start_config
 else
     echo "are you rooted?"
 fi
