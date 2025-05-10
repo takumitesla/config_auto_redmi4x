@@ -6,7 +6,9 @@ figlet AUTO_CONFIG
 echo "by takumi tesla"
 
 start_config(){
-
+    auto_open_termux
+    auto_adb_port_5555
+    auto_boot
 }
 
 auto_open_termux(){
