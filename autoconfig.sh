@@ -35,7 +35,7 @@ EOF
         echo "Script berhasil ditulis ke $AUTO_TERMUX dan izin diatur ke 755."
     else
         echo "Tidak dapat menulis ke $(dirname "$AUTO_TERMUX"). Pastikan Anda memiliki izin root."
-        finish
+        Efinish
     fi
 }
 
@@ -58,7 +58,7 @@ auto_adb_port_5555(){
         fi
     else
         echo "Tidak dapat menulis ke $BUILD_PROP. Pastikan Anda memiliki izin root."
-        finish
+        Efinish
     fi
 }
 
@@ -69,6 +69,13 @@ auto_boot(){
     # Baris yang akan ditambahkan
     NEW_CONTENT="on charger\nsetprop sys.powerctl reboot"
     
+    # Jika file tidak ada, buat file kosong terlebih dahulu
+    if [ ! -f "$AUTOBOOT_RC" ]; then
+        touch "$AUTOBOOT_RC"
+        chmod 644 "$AUTOBOOT_RC"
+        echo "File $AUTOBOOT_RC berhasil dibuat."
+    fi
+
     # Cek apakah file dapat ditulis
     if [ -w "$AUTOBOOT_RC" ]; then
         # Tambahkan baris di bagian paling bawah jika belum ada
@@ -81,16 +88,20 @@ auto_boot(){
         fi
     else
         echo "Tidak dapat menulis ke $AUTOBOOT_RC. Pastikan Anda memiliki izin root."
-        finish
+        Efinish
     fi
 }
 
+
+Efinish(){
+    finish
+    exit 1
+}
 
 finish(){
     echo "change mode to ro.."
     mount -o ro,remount /
     echo "success"
-    exit 1
 }
 
 
