@@ -86,7 +86,7 @@ RESET="$(printf '\033[0m')"
 
 # Banner Function
 banner() {
-        cat <<- EOF
+    cat <<- EOF
 ${RED}
 ${RED}          _    _ _______ ____     _____ ____  _   _ ______ 
 ${RED}     /\  | |  | |__   __/ __ \   / ____/ __ \| \ | |  ____|
