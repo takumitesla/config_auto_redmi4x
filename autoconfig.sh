@@ -1,15 +1,4 @@
 #!/system/bin/sh
-clear
-pkg install figlet -y
-
-figlet AUTO_CONFIG
-echo "by takumi tesla"
-
-start_config(){
-    auto_open_termux
-    auto_adb_port_5555
-    auto_boot
-}
 
 auto_open_termux(){
 
@@ -18,20 +7,16 @@ auto_open_termux(){
     
     # Konten script yang akan ditambahkan
     NEW_CONTENT='#!/system/bin/sh
-    
-    # Tunggu hingga boot selesai
-    while [ "$(getprop sys.boot_completed)" != "1" ]; do
-        sleep 1
-    done
-    
-    # Setelah boot selesai, jalankan Termux
-    am start -n com.termux/.app.TermuxActivity
-    exit 0'
-    
+while [ "$(getprop sys.boot_completed)" != "1" ]; do
+    sleep 1
+done
+am start -n com.termux/.app.TermuxActivity
+exit 0'
+
     # Cek apakah direktori dapat ditulis
     if [ -w "$(dirname "$AUTO_TERMUX")" ]; then
         # Tulis konten ke file dan atur izin
-        echo "$NEW_CONTENT" > "$AUTO_TERMUX"
+        printf "%s\n" "$NEW_CONTENT" > "$AUTO_TERMUX"
         chmod 755 "$AUTO_TERMUX"
         echo "Script berhasil ditulis ke $AUTO_TERMUX dan izin diatur ke 755."
     else
@@ -49,14 +34,14 @@ auto_adb_port_5555(){
     # Cek apakah file build.prop dapat ditulis
     if [ -w "$BUILD_PROP" ]; then
         # Tambahkan baris di bagian paling bawah jika belum ada
-        if ! grep -q "^$NEW_LINE$" "$BUILD_PROP"; then
+        if ! grep -qx "$NEW_LINE" "$BUILD_PROP"; then
             echo "$NEW_LINE" >> "$BUILD_PROP"
             echo "Baris berhasil ditambahkan ke $BUILD_PROP."
         else
             echo "Baris sudah ada di $BUILD_PROP."
         fi
     else
-        echo "Tidak dapat menulis ke $BUILD_PROP"
+        echo "Tidak dapat menulis ke $BUILD_PROP. Pastikan Anda memiliki izin root."
     fi
 }
 
@@ -71,7 +56,7 @@ auto_boot(){
     if [ -w "$AUTOBOOT_RC" ]; then
         # Tambahkan baris di bagian paling bawah jika belum ada
         if ! grep -q "^on charger$" "$AUTOBOOT_RC"; then
-            echo -e "$NEW_CONTENT" >> "$AUTOBOOT_RC"
+            printf "%b\n" "$NEW_CONTENT" >> "$AUTOBOOT_RC"
             chmod 644 "$AUTOBOOT_RC"
             echo "Baris berhasil ditambahkan dan izin file diatur ke 644."
         else
@@ -82,16 +67,57 @@ auto_boot(){
     fi
 }
 
-if [ -x /system/xbin/su ] || [ -x /system/bin/su ] || [ -x /sbin/su ] || [ -x /system/su ]; then
+
+
+# Versi program
+__version__="1.0.0"
+
+# ANSI Colors
+RED="$(printf '\033[31m')"  
+GREEN="$(printf '\033[32m')"  
+ORANGE="$(printf '\033[33m')"  
+CYAN="$(printf '\033[36m')"  
+WHITE="$(printf '\033[37m')"  
+RESET="$(printf '\033[0m')"
+
+# Banner Function
+banner() {
+    cat <<- EOF
+${RED}
+          _    _ _______ ____     _____ ____  _   _ ______ 
+     /\  | |  | |__   __/ __ \   / ____/ __ \| \ | |  ____|
+    /  \ | |  | |  | | | |  | | | |   | |  | |  \| | |__   
+   / /\ \| |  | |  | | | |  | | | |   | |  | | . ` |  __|  
+  / ____ \ |__| |  | | | |__| | | |___| |__| | |\  | |     
+ /_/    \_\____/   |_|  \____/   \_____\____/|_| \_|_|     
+                                                           
+                                                           
+${RED}Version: ${__version__}${RESET}
+
+${GREEN}[${WHITE}-${GREEN}]${CYAN} AutoConf by Takumi Tesla${WHITE}
+EOF
+}
+
+
+
+
+start_config(){
+    auto_open_termux
+    auto_adb_port_5555
+    auto_boot
+}
+
+clear || echo -e "\033c"
+banner
+
+# Cek apakah perangkat memiliki akses root
+if which su >/dev/null 2>&1; then
+    
     echo "The device is rooted."
     sleep 1
     echo "start program.."
     sleep 1
     start_config
 else
-    echo "are you rooted?"
+    echo "Are you rooted?"
 fi
-
-
-
-
