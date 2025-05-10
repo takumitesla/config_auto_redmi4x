@@ -97,7 +97,7 @@ For any issues, please open a new issue on GitHub.
 ## Contact
 Developed by **Takumi Tesla**  
 - GitHub: [Takumi Tesla](https://github.com/takumitesla)  
-- Email: takumitesla@example.com  
+- Email: takumitesla@gmail.com  
 
 ---
 
