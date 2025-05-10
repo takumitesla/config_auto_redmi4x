@@ -82,7 +82,7 @@ RESET="$(printf '\033[0m')"
 
 # Banner Function
 banner() {
-    cat <<- EOF "
+    cat <<- EOF
 ${RED}
           _    _ _______ ____     _____ ____  _   _ ______ 
      /\  | |  | |__   __/ __ \   / ____/ __ \| \ | |  ____|
@@ -94,7 +94,7 @@ ${RED}
                                                            
 ${RED}Version: ${__version__}${RESET}
 
-${GREEN}[${WHITE}-${GREEN}]${CYAN} AutoConf by Takumi Tesla${WHITE}"
+${GREEN}[${WHITE}-${GREEN}]${CYAN} AutoConf by Takumi Tesla${WHITE}
 EOF
 }
 
