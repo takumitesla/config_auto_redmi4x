@@ -90,6 +90,7 @@ finish(){
     echo "change mode to ro.."
     mount -o ro,remount /
     echo "success"
+    exit 1
 }
 
 
