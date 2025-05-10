@@ -113,6 +113,7 @@ start_config(){
     auto_boot
     finish
     echo "all completed."
+    exit 0
 }
 
 clear || echo -e "\033c"
