@@ -4,14 +4,17 @@ auto_open_termux(){
 
     # Path ke file autotermux.sh
     AUTO_TERMUX="/data/adb/service.d/autotermux.sh"
-    
+
     # Konten script yang akan ditambahkan
-    NEW_CONTENT='#!/system/bin/sh
+    NEW_CONTENT=$(cat << 'EOF'
+#!/system/bin/sh
 while [ "$(getprop sys.boot_completed)" != "1" ]; do
     sleep 1
 done
 am start -n com.termux/.app.TermuxActivity
-exit 0'
+exit 0
+EOF
+)
 
     # Cek apakah direktori dapat ditulis
     if [ -w "$(dirname "$AUTO_TERMUX")" ]; then
@@ -23,6 +26,7 @@ exit 0'
         echo "Tidak dapat menulis ke $(dirname "$AUTO_TERMUX"). Pastikan Anda memiliki izin root."
     fi
 }
+
 
 auto_adb_port_5555(){
     # Path ke file build.prop
@@ -83,19 +87,19 @@ RESET="$(printf '\033[0m')"
 # Banner Function
 banner() {
     cat <<- EOF
-${RED}
-          _    _ _______ ____     _____ ____  _   _ ______ 
-     /\  | |  | |__   __/ __ \   / ____/ __ \| \ | |  ____|
-    /  \ | |  | |  | | | |  | | | |   | |  | |  \| | |__   
-   / /\ \| |  | |  | | | |  | | | |   | |  | | . ` |  __|  
-  / ____ \ |__| |  | | | |__| | | |___| |__| | |\  | |     
- /_/    \_\____/   |_|  \____/   \_____\____/|_| \_|_|     
-                                                           
-                                                           
-${RED}Version: ${__version__}${RESET}
+            ${RED}
+            ${RED}          _    _ _______ ____     _____ ____  _   _ ______ 
+            ${RED}     /\  | |  | |__   __/ __ \   / ____/ __ \| \ | |  ____|
+            ${RED}    /  \ | |  | |  | | | |  | | | |   | |  | |  \| | |__   
+            ${RED}   / /\ \| |  | |  | | | |  | | | |   | |  | | . ` |  __|  
+            ${RED}  / ____ \ |__| |  | | | |__| | | |___| |__| | |\  | |     
+            ${RED} /_/    \_\____/   |_|  \____/   \_____\____/|_| \_|_|     
+            ${RED}                                                           
+                                                                    
+            ${RED}Version: ${__version__}${RESET}
 
-${GREEN}[${WHITE}-${GREEN}]${CYAN} AutoConf by Takumi Tesla${WHITE}
-EOF
+            ${GREEN}[${WHITE}-${GREEN}]${CYAN} AutoConf by Takumi Tesla${WHITE}
+    EOF
 }
 
 
