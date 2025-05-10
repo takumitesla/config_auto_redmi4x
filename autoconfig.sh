@@ -107,7 +107,7 @@ start_config(){
 clear || echo -e "\033c"
 pkg install figlet -y
 clear || echo -e "\033c"
-figlet AUTOCONF
+echo "AUTOCONF"
 echo "version : 1.0.0"
 echo "\n"
 echo "by Takumi Tesla"
