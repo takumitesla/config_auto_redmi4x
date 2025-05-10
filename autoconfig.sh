@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/system/bin/sh
 clear
 pkg install figlet -y
 
