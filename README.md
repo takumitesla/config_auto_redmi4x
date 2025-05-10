@@ -14,6 +14,8 @@ wget https://raw.githubusercontent.com/takumitesla/main/autoconfig.sh
 
 chmod +x autoconfig.sh
 
+su
+
 ./autoconfig.sh
 
 # Devices
