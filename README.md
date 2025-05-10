@@ -22,9 +22,13 @@ su
 
 tested on redmi 4x cheris os A12L
 
-link rom:
+link rom download: https://drive.usercontent.google.com/download?id=19W5GmZ7l9AA9xDJuLtw0DMtG133wi1pK&export=download&authuser=0
 
 kernel for overclocking cpu
 
-link kernel : 
+link kernel download : https://drive.google.com/file/d/1QvNwubnX5tFb6bu1H3KF9fRam4mIR3am/view
+
+magisk
+
+link download : https://github.com/topjohnwu/Magisk/releases/tag/v28.1
 
