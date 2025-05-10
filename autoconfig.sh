@@ -1,5 +1,15 @@
 #!/system/bin/sh
 
+start(){
+    echo "change mode to rw.."
+    if mount -o rw,remount /; then
+        echo "success"
+    else
+        echo "remount failed"
+        exit 1
+    fi
+}
+
 auto_open_termux(){
 
     # Path ke file autotermux.sh
@@ -8,11 +18,12 @@ auto_open_termux(){
     # Konten script yang akan ditambahkan
     NEW_CONTENT=$(cat << 'EOF'
 #!/system/bin/sh
-while [ "$(getprop sys.boot_completed)" != "1" ]; do
+while [ "$(getprop sys.boot_completed | tr -d '\n')" != "1" ]; do
     sleep 1
 done
+sleep 5
 am start -n com.termux/.app.TermuxActivity
-exit 0
+exit 
 EOF
 )
 
@@ -24,6 +35,7 @@ EOF
         echo "Script berhasil ditulis ke $AUTO_TERMUX dan izin diatur ke 755."
     else
         echo "Tidak dapat menulis ke $(dirname "$AUTO_TERMUX"). Pastikan Anda memiliki izin root."
+        finish
     fi
 }
 
@@ -46,6 +58,7 @@ auto_adb_port_5555(){
         fi
     else
         echo "Tidak dapat menulis ke $BUILD_PROP. Pastikan Anda memiliki izin root."
+        finish
     fi
 }
 
@@ -68,51 +81,37 @@ auto_boot(){
         fi
     else
         echo "Tidak dapat menulis ke $AUTOBOOT_RC. Pastikan Anda memiliki izin root."
+        finish
     fi
 }
 
 
-
-# Versi program
-__version__="1.0.0"
-
-# ANSI Colors
-RED="$(printf '\033[31m')"  
-GREEN="$(printf '\033[32m')"  
-ORANGE="$(printf '\033[33m')"  
-CYAN="$(printf '\033[36m')"  
-WHITE="$(printf '\033[37m')"  
-RESET="$(printf '\033[0m')"
-
-# Banner Function
-banner() {
-    cat <<- EOF
-${RED}
-${RED}          _    _ _______ ____     _____ ____  _   _ ______ 
-${RED}     /\  | |  | |__   __/ __ \   / ____/ __ \| \ | |  ____|
-${RED}    /  \ | |  | |  | | | |  | | | |   | |  | |  \| | |__   
-${RED}   / /\ \| |  | |  | | | |  | | | |   | |  | | . ` |  __|  
-${RED}  / ____ \ |__| |  | | | |__| | | |___| |__| | |\  | |     
-${RED} /_/    \_\____/   |_|  \____/   \_____\____/|_| \_|_|     
-${RED}                                                           
-                                                                        
-${RED}Version: ${__version__}${RESET}
-    
-${GREEN}[${WHITE}-${GREEN}]${CYAN} AutoConf by Takumi Tesla${WHITE}
-EOF
+finish(){
+    echo "change mode to ro.."
+    mount -o ro,remount /
+    echo "success"
 }
-
 
 
 
 start_config(){
+    start
     auto_open_termux
     auto_adb_port_5555
     auto_boot
+    finish
+    echo "all completed."
 }
 
 clear || echo -e "\033c"
-banner
+pkg install figlet -y
+clear || echo -e "\033c"
+figlet AUTOCONF
+echo "version : 1.0.0"
+echo "\n"
+echo "by Takumi Tesla"
+echo "github : https://github.com/takumitesla"
+
 
 # Cek apakah perangkat memiliki akses root
 if which su >/dev/null 2>&1; then
