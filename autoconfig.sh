@@ -6,11 +6,78 @@ figlet AUTO_CONFIG
 echo "by takumi tesla"
 
 start_config(){
-    clear
-    echo "phase 1"
-    sleep 1
-    echo "setprop service.adb.tcp.port=5555" >> /system/
+
+}
+
+auto_open_termux(){
+
+    # Path ke file autotermux.sh
+    AUTO_TERMUX="/data/adb/service.d/autotermux.sh"
     
+    # Konten script yang akan ditambahkan
+    NEW_CONTENT='#!/system/bin/sh
+    
+    # Tunggu hingga boot selesai
+    while [ "$(getprop sys.boot_completed)" != "1" ]; do
+        sleep 1
+    done
+    
+    # Setelah boot selesai, jalankan Termux
+    am start -n com.termux/.app.TermuxActivity
+    exit 0'
+    
+    # Cek apakah direktori dapat ditulis
+    if [ -w "$(dirname "$AUTO_TERMUX")" ]; then
+        # Tulis konten ke file dan atur izin
+        echo "$NEW_CONTENT" > "$AUTO_TERMUX"
+        chmod 755 "$AUTO_TERMUX"
+        echo "Script berhasil ditulis ke $AUTO_TERMUX dan izin diatur ke 755."
+    else
+        echo "Tidak dapat menulis ke $(dirname "$AUTO_TERMUX"). Pastikan Anda memiliki izin root."
+    fi
+}
+
+auto_adb_port_5555(){
+    # Path ke file build.prop
+    BUILD_PROP="/system/build.prop"
+    
+    # Baris yang akan ditambahkan
+    NEW_LINE="service.adb.tcp.port=5555"
+    
+    # Cek apakah file build.prop dapat ditulis
+    if [ -w "$BUILD_PROP" ]; then
+        # Tambahkan baris di bagian paling bawah jika belum ada
+        if ! grep -q "^$NEW_LINE$" "$BUILD_PROP"; then
+            echo "$NEW_LINE" >> "$BUILD_PROP"
+            echo "Baris berhasil ditambahkan ke $BUILD_PROP."
+        else
+            echo "Baris sudah ada di $BUILD_PROP."
+        fi
+    else
+        echo "Tidak dapat menulis ke $BUILD_PROP"
+    fi
+}
+
+auto_boot(){
+    # Path ke file autoboot.rc
+    AUTOBOOT_RC="/system/etc/init/autoboot.rc"
+    
+    # Baris yang akan ditambahkan
+    NEW_CONTENT="on charger\nsetprop sys.powerctl reboot"
+    
+    # Cek apakah file dapat ditulis
+    if [ -w "$AUTOBOOT_RC" ]; then
+        # Tambahkan baris di bagian paling bawah jika belum ada
+        if ! grep -q "^on charger$" "$AUTOBOOT_RC"; then
+            echo -e "$NEW_CONTENT" >> "$AUTOBOOT_RC"
+            chmod 644 "$AUTOBOOT_RC"
+            echo "Baris berhasil ditambahkan dan izin file diatur ke 644."
+        else
+            echo "Baris sudah ada di $AUTOBOOT_RC."
+        fi
+    else
+        echo "Tidak dapat menulis ke $AUTOBOOT_RC. Pastikan Anda memiliki izin root."
+    fi
 }
 
 if [ -x /system/xbin/su ] || [ -x /system/bin/su ] || [ -x /sbin/su ] || [ -x /system/su ]; then
@@ -23,13 +90,6 @@ else
     echo "are you rooted?"
 fi
 
-[9/5 22.52] Dr. Maxwell: /data/adb/service.d/autotermux.sh
-[9/5 22.59] Dr. Maxwell: #!/system/bin/sh
-sleep 55
-am start -n com.termux/.app.TermuxActivity
-exit 0
-[9/5 22.59] Dr. Maxwell: /system/build.prop
-[9/5 23.00] Dr. Maxwell: service.adb.tcp.port=5555
-[9/5 23.00] Dr. Maxwell: /system/etc/init/autoboot.rc
-[9/5 23.01] Dr. Maxwell: on charger
-setprop sys.powerctl reboot
+
+
+
