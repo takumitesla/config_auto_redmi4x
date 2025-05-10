@@ -45,7 +45,7 @@ auto_adb_port_5555(){
     BUILD_PROP="/system/build.prop"
     
     # Baris yang akan ditambahkan
-    NEW_LINE="service.adb.tcp.port=5555"
+    NEW_LINE="\nservice.adb.tcp.port=5555"
     
     # Cek apakah file build.prop dapat ditulis
     if [ -w "$BUILD_PROP" ]; then
