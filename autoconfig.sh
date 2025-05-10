@@ -1,7 +1,7 @@
 #!/system/bin/sh
 
 start(){
-    echo "change mode to rw.."
+    echo "change mode to read,write.."
     if mount -o rw,remount /; then
         echo "success"
     else
@@ -99,7 +99,7 @@ Efinish(){
 }
 
 finish(){
-    echo "change mode to ro.."
+    echo "change mode to read only.."
     mount -o ro,remount /
     echo "success"
 }
