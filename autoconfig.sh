@@ -117,8 +117,8 @@ clear || echo -e "\033c"
 pkg install figlet -y
 clear || echo -e "\033c"
 echo "AUTOCONF"
-echo "version : 1.0.0\n"
-echo "\n"
+echo -e "version : 1.0.0\n"
+echo -e "\n"
 echo "by Takumi Tesla"
 echo "github : https://github.com/takumitesla"
 
