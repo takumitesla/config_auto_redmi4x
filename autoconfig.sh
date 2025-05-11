@@ -92,19 +92,16 @@ auto_boot(){
     fi
 }
 
-
-Efinish(){
-    finish
-    exit 1
-}
-
 finish(){
     echo "change mode to read only.."
     mount -o ro,remount /
     echo "success"
 }
 
-
+Efinish(){
+    finish
+    exit 1
+}
 
 start_config(){
     start
