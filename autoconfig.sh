@@ -136,4 +136,5 @@ if which su >/dev/null 2>&1; then
     start_config
 else
     echo "Are you rooted?"
+    exit 1
 fi
