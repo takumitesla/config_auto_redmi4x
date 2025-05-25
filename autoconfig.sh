@@ -51,7 +51,7 @@ auto_adb_port_5555(){
     if [ -w "$BUILD_PROP" ]; then
         # Tambahkan baris di bagian paling bawah jika belum ada
         if ! grep -qx "$NEW_LINE" "$BUILD_PROP"; then
-            echo "$NEW_LINE" >> "$BUILD_PROP"
+            echo -e "$NEW_LINE" >> "$BUILD_PROP"
             echo "Baris berhasil ditambahkan ke $BUILD_PROP."
         else
             echo "Baris sudah ada di $BUILD_PROP."
